@@ -21,69 +21,83 @@ namespace LONTAR
 
         private void InitializeComponent()
         {
-            this.tbuser = new System.Windows.Forms.TextBox();
-            this.tbpw = new System.Windows.Forms.TextBox();
-            this.tbemail = new System.Windows.Forms.TextBox();
-            this.tbnotelp = new System.Windows.Forms.TextBox();
-            this.btregister = new System.Windows.Forms.Button();
-            this.SuspendLayout();
+            tbuser = new TextBox();
+            tbpw = new TextBox();
+            tbemail = new TextBox();
+            tbnotelp = new TextBox();
+            btregister = new Button();
+            button1 = new Button();
+            SuspendLayout();
             // 
             // tbuser
             // 
-            this.tbuser.Location = new System.Drawing.Point(255, 136);
-            this.tbuser.Name = "tbuser";
-            this.tbuser.Size = new System.Drawing.Size(191, 23);
-            this.tbuser.TabIndex = 0;
+            tbuser.Location = new Point(255, 136);
+            tbuser.Name = "tbuser";
+            tbuser.Size = new Size(191, 23);
+            tbuser.TabIndex = 0;
             // 
             // tbpw
             // 
-            this.tbpw.Location = new System.Drawing.Point(255, 196);
-            this.tbpw.Name = "tbpw";
-            this.tbpw.Size = new System.Drawing.Size(191, 23);
-            this.tbpw.TabIndex = 1;
+            tbpw.Location = new Point(255, 196);
+            tbpw.Name = "tbpw";
+            tbpw.Size = new Size(191, 23);
+            tbpw.TabIndex = 1;
             // 
             // tbemail
             // 
-            this.tbemail.Location = new System.Drawing.Point(255, 258);
-            this.tbemail.Name = "tbemail";
-            this.tbemail.Size = new System.Drawing.Size(191, 23);
-            this.tbemail.TabIndex = 2;
+            tbemail.Location = new Point(255, 258);
+            tbemail.Name = "tbemail";
+            tbemail.Size = new Size(191, 23);
+            tbemail.TabIndex = 2;
             // 
             // tbnotelp
             // 
-            this.tbnotelp.Location = new System.Drawing.Point(255, 321);
-            this.tbnotelp.Name = "tbnotelp";
-            this.tbnotelp.Size = new System.Drawing.Size(191, 23);
-            this.tbnotelp.TabIndex = 3;
+            tbnotelp.Location = new Point(255, 321);
+            tbnotelp.Name = "tbnotelp";
+            tbnotelp.Size = new Size(191, 23);
+            tbnotelp.TabIndex = 3;
             // 
             // btregister
             // 
-            this.btregister.Location = new System.Drawing.Point(317, 354);
-            this.btregister.Name = "btregister";
-            this.btregister.Size = new System.Drawing.Size(73, 31);
-            this.btregister.TabIndex = 4;
-            this.btregister.Text = "Register";
-            this.btregister.UseVisualStyleBackColor = true;
-            this.btregister.Click += new System.EventHandler(this.btregister_Click);
+            btregister.BackColor = Color.Lime;
+            btregister.Location = new Point(266, 352);
+            btregister.Name = "btregister";
+            btregister.Size = new Size(73, 31);
+            btregister.TabIndex = 4;
+            btregister.Text = "Register";
+            btregister.UseVisualStyleBackColor = false;
+            btregister.Click += btregister_Click;
+            // 
+            // button1
+            // 
+            button1.BackColor = Color.Yellow;
+            button1.Location = new Point(354, 352);
+            button1.Name = "button1";
+            button1.Size = new Size(73, 31);
+            button1.TabIndex = 5;
+            button1.Text = "Login";
+            button1.UseVisualStyleBackColor = false;
+            button1.Click += this.button1_Click;
             // 
             // FormRegister
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackgroundImage = global::LONTAR.Properties.Resources.REGISTER;
-            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.ClientSize = new System.Drawing.Size(687, 450);
-            this.Controls.Add(this.btregister);
-            this.Controls.Add(this.tbnotelp);
-            this.Controls.Add(this.tbemail);
-            this.Controls.Add(this.tbpw);
-            this.Controls.Add(this.tbuser);
-            this.DoubleBuffered = true;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "FormRegister";
-            this.Text = "Form Register";
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            BackgroundImage = Properties.Resources.RegisAU;
+            BackgroundImageLayout = ImageLayout.Zoom;
+            ClientSize = new Size(687, 450);
+            Controls.Add(button1);
+            Controls.Add(btregister);
+            Controls.Add(tbnotelp);
+            Controls.Add(tbemail);
+            Controls.Add(tbpw);
+            Controls.Add(tbuser);
+            DoubleBuffered = true;
+            FormBorderStyle = FormBorderStyle.None;
+            Name = "FormRegister";
+            Text = "Form Register";
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -93,5 +107,6 @@ namespace LONTAR
         private TextBox tbemail;
         private TextBox tbnotelp;
         private Button btregister;
+        private Button button1;
     }
 }

@@ -86,5 +86,10 @@ namespace LONTAR
             FormRegister register = new FormRegister();
             register.Show();
         }
+
+        private void FormLogin_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

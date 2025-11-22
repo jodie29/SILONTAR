@@ -73,6 +73,26 @@ namespace LONTAR.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap LoginAU {
+            get {
+                object obj = ResourceManager.GetObject("LoginAU", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap RegisAU {
+            get {
+                object obj = ResourceManager.GetObject("RegisAU", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap REGISTER {
             get {
                 object obj = ResourceManager.GetObject("REGISTER", resourceCulture);

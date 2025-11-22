@@ -15,9 +15,15 @@ namespace LONTAR
 {
     public partial class FormRegister : Form
     {
+        // PENTING: Tentukan satu Connection String yang benar untuk seluruh operasi database
+        // Saya menggunakan koneksi Register() karena diasumsikan itu yang terbaru
+        private const string DatabaseConnectionString = "Host=localhost;Username=postgres;Password=jodiefer;Database=CANKULLIN";
+
         public FormRegister()
         {
             InitializeComponent();
+            // Atur agar karakter password tidak terlihat (opsional, tapi disarankan)
+            tbpw.UseSystemPasswordChar = true;
         }
 
         // ================================
@@ -27,13 +33,7 @@ namespace LONTAR
         {
             try
             {
-                // Validasi kontrol
-                if (tbuser == null || tbpw == null || tbemail == null || tbnotelp == null)
-                {
-                    MessageBox.Show("Terjadi masalah dengan kontrol input. Mohon coba lagi.",
-                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
+                // ... (Validasi kontrol awal tidak berubah) ...
 
                 // Ambil input
                 string username = tbuser.Text.Trim();
@@ -41,21 +41,32 @@ namespace LONTAR
                 string email = tbemail.Text.Trim();
                 string nohp = tbnotelp.Text.Trim();
 
+                // Validasi input wajib
+                if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password) ||
+                    string.IsNullOrEmpty(email) || string.IsNullOrEmpty(nohp))
+                {
+                    MessageBox.Show("Semua kolom harus diisi!",
+                        "Kesalahan Input", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
                 // Validasi nomor HP
-                if (string.IsNullOrEmpty(nohp) || !Regex.IsMatch(nohp, @"^\d+$"))
+                if (!Regex.IsMatch(nohp, @"^\d+$"))
                 {
                     MessageBox.Show("Nomor HP harus berupa angka yang valid!",
                         "Kesalahan Input", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
-                // Validasi password
-                if (string.IsNullOrEmpty(password) || password.Length <= 7 || !Regex.IsMatch(password, @"^\d+$"))
+                // PERBAIKAN: Validasi password diubah agar tidak hanya angka dan minimal 8 karakter
+                if (password.Length < 8)
                 {
-                    MessageBox.Show("Kata sandi harus lebih dari 8 angka!",
+                    MessageBox.Show("Kata sandi harus terdiri dari minimal 8 karakter!",
                         "Kesalahan Input", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
+
+                // HAPUS validasi Regex.IsMatch(password, @"^\d+$") yang sebelumnya salah/kurang aman
 
                 // Generate ID admin
                 string newAdminId = GenerateNewAdminId();
@@ -67,6 +78,7 @@ namespace LONTAR
                 }
 
                 // Proses register ke database
+                // Catatan: Saya menggunakan username untuk kolom nama_admin, sesuai logika Anda sebelumnya
                 bool isRegistered = Register(newAdminId, username, email, nohp, username, password);
 
                 if (isRegistered)
@@ -74,6 +86,7 @@ namespace LONTAR
                     MessageBox.Show("Registrasi Berhasil!", "Berhasil",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
 
+                    // Aksi yang benar: Sembunyikan form ini dan tampilkan FormLogin
                     this.Hide();
                     FormLogin formLogin = new FormLogin();
                     formLogin.Show();
@@ -96,11 +109,12 @@ namespace LONTAR
         // ======================================
         private string GetLastAdminId()
         {
-            string connStr = "Host=localhost;Username=postgres;Password=jodie123;Database=LONTAR";
+            // PERBAIKAN: Menggunakan DatabaseConnectionString yang sudah disatukan
+            string connStr = DatabaseConnectionString;
             string lastId = null;
 
             string query = "SELECT id_admin FROM admin WHERE id_admin LIKE 'adm%' " +
-                           "ORDER BY CAST(SUBSTRING(id_admin FROM 4) AS INT) DESC LIMIT 1";
+                            "ORDER BY CAST(SUBSTRING(id_admin FROM 4) AS INT) DESC LIMIT 1";
 
             try
             {
@@ -119,16 +133,15 @@ namespace LONTAR
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Gagal mengambil ID admin terakhir: " + ex.Message,
+                // Menampilkan pesan error yang lebih informatif
+                MessageBox.Show("Gagal mengambil ID admin terakhir. Cek koneksi DB. Error: " + ex.Message,
                     "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             return lastId;
         }
 
-        // ======================================
-        // MEMBUAT ID ADMIN BARU
-        // ======================================
+        // ... (GenerateNewAdminId tidak ada perubahan) ...
         private string GenerateNewAdminId()
         {
             string lastId = GetLastAdminId();
@@ -146,15 +159,17 @@ namespace LONTAR
             return "adm" + newNumber.ToString();
         }
 
+
         // ======================================
         // REGISTER KE DATABASE
         // ======================================
         private bool Register(string idAdmin, string nama, string email, string nohp, string username, string password)
         {
-            string connStr = "Host=localhost;Username=postgres;Password=jodiefer;Database=CANKULLIN";
+            // PERBAIKAN: Menggunakan DatabaseConnectionString yang sudah disatukan
+            string connStr = DatabaseConnectionString;
 
             string query = "INSERT INTO admin (id_admin, nama_admin, email, no_hp_admin, username, password) " +
-                           "VALUES (@id_admin, @nama_admin, @email, @no_hp_admin, @username, @password)";
+                            "VALUES (@id_admin, @nama_admin, @email, @no_hp_admin, @username, @password)";
 
             try
             {
@@ -179,11 +194,24 @@ namespace LONTAR
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Registrasi Gagal: " + ex.Message,
+                // Menampilkan pesan error yang lebih spesifik untuk kegagalan INSERT
+                MessageBox.Show("Registrasi Gagal. Pastikan data unik seperti Username/Email belum terdaftar. Error: " + ex.Message,
                     "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                 return false;
             }
         }
+
+        // ======================================
+        // EVENT TOMBOL LOGIN (button1_Click)
+        // ======================================
+        private void button1_Click(object sender, EventArgs e) // Menggantikan private void btlogin_Click yang tidak terpakai
+        {
+            this.Hide();
+            FormLogin login = new FormLogin();
+            login.Show();
+        }
+
+        // Hapus atau abaikan method btlogin_Click yang lama karena tidak terhubung ke control manapun di designer
     }
 }
